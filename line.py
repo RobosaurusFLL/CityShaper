@@ -40,6 +40,18 @@ def square2line():
         while right_color_sensor_rli() > 50:
             m.on(-50, 5)
     m.off()
+
+def square2Otherline():
+    for i in range (3):
+        while left_color_sensor_rli() < 50:
+            m.on(50, 5) 
+        while left_color_sensor_rli() > 50:
+            m.on(50, -5)
+        while right_color_sensor_rli() < 50:
+            m.on(-50, 5)
+        while right_color_sensor_rli() > 50:
+            m.on(-50, -5)
+    m.off()
     
 
 

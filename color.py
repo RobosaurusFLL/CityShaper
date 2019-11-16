@@ -29,7 +29,7 @@ def is_left_black():
         return False
 
 def is_left_not_white():
-    if left_color_sensor_rli() < 90:
+    if left_color_sensor_rli() < 50:
         return True
     else:
         return False
