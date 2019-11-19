@@ -22,7 +22,7 @@ def rlidiff():
     return (left_color_sensor_rli() - right_color_sensor_rli()) + 50
 
 def other_stoping_point():
-    return(is_left_not_white() and is_right_not_white()) 
+    return(is_left_other_shade() and is_right_other_shade()) 
 
 def stoping_point():
     return is_left_black() and is_right_black()
@@ -47,7 +47,7 @@ def go_2_end_of_line():
     Line_Flowering(right_color_sensor_rli, is_left_white, 2)
     Line_Flowering(right_color_sensor_rli, is_left_black, 2)
     Line_Flowering(right_color_sensor_rli, is_left_white, 2)
-    Line_Flowering(right_color_sensor_rli, is_left_not_white, 2, stop_at_end=True)
+    Line_Flowering(right_color_sensor_rli, is_left_other_shade, 2, stop_at_end=True)
     mr.on(-20)
     while is_right_white() != True:
         pass
