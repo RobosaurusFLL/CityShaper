@@ -47,7 +47,7 @@ def is_right_black():
         return False
 
 def is_right_other_shade():
-    if right_color_sensor_rli() < 90:
+    if right_color_sensor_rli() < 50:
         return True
     else:
         return False

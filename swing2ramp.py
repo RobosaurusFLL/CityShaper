@@ -3,9 +3,7 @@
 import sys
 import time
 
-import os
 import time
-os.system('setfont Lat15-TerminusBold32x16')
 
 from ev3dev2.motor import OUTPUT_A, OUTPUT_B, OUTPUT_C, OUTPUT_D
 from ev3dev2.motor import LargeMotor, MoveTank, MoveSteering
@@ -42,7 +40,7 @@ def base2line():
     while not is_right_white():
         pass
     m.off()
-    m.on_for_rotations(0, -20, 0.5)
+    m.on_for_rotations(0, -20, 0.6)
     m.on(100, -20)
     while not is_right_white():
         pass
@@ -52,7 +50,7 @@ def base2line():
 
 def go_2_end_of_line():
     #follow the line to the intersection
-    Line_Flowering(right_color_sensor_rli, is_left_white, 2)
+    Line_Flowering(right_color_sensor_rli, is_left_white, 2, min_speed=-20)
     Line_Flowering(right_color_sensor_rli, is_left_black, 2)
     #Line_Flowering(right_color_sensor_rli, is_left_white, 2)
     #Line_Flowering(right_color_sensor_rli, is_left_other_shade, 2, stop_at_end=True)
@@ -62,7 +60,7 @@ def go_2_end_of_line():
     while not is_left_other_shade():
         pass
     m.on(50, -20)
-    while not is_right_other_shade():
+    while right_color_sensor_rli() > 90:
         pass
     m.off()
     #follow the line to the end by counting motor
@@ -74,9 +72,9 @@ def go_2_end_of_line():
 
 def endofline2stability():
     #turn to stability testing mission
-    m.on_for_degrees(100, 20, (360 * 2))
-    m.on_for_rotations(0, -30, 1.6)
-    m.on_for_degrees(100, -20, (360 * 2.1))
+    m.on_for_degrees(100, 20, (360 * 1.5))
+    m.on_for_rotations(0, -30, 1.5)
+    m.on_for_degrees(100, -20, (360 * 1.5))
     m.on_for_seconds(0, -50, 2)
   
 def stability2elevator():

@@ -23,9 +23,9 @@ def push2redcircle():
         pass
     m.off()
     m.on_for_rotations(0, 20, 0.5)
-    m.on_for_rotations(0, 100, 4)
-    m.on_for_rotations(100, -20, 0.3)
-    m.on_for_seconds(0, 100, 2)
+    m.on_for_rotations(0, 100, 2)
+    m.on_for_rotations(100, -20, 0.5)
+    m.on_for_seconds(0, 100, 3)
     m.on_for_degrees(100, 30, 360 * 2.5)
 
 def push2blackcircle():
@@ -39,10 +39,10 @@ def push2blackcircle():
     while on_for_rotations() != True:
         pass
     m.off()
-    m.on_for_rotations(0, 40, 1.5)
+    m.on_for_rotations(0, 100, 1.5)
 
     m.on_for_degrees( 100, -30, 360 * (90 / 45))
-    m.on_for_seconds(0, 50, 3)
+    m.on_for_seconds(0, 100, 1.5)
     m.on_for_degrees(100, 30, 360 * (90 / 45))
 
 if __name__ == "__main__":
