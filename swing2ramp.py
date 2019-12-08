@@ -30,18 +30,18 @@ def base2line():
     m.on(0, -60)
     while right_color_sensor_rli() > 50:
         pass
-    m.off()
-    m.on_for_rotations(100, 20, 0.5)
-    m.on(0, -40)
+    m.on(-35, -40)
     while not is_right_white():
         pass
+    m.on(0, -40)
     while not is_right_black():
         pass
     while not is_right_white():
         pass
     m.off()
-    m.on_for_rotations(0, -20, 0.6)
-    m.on(100, -20)
+
+    m.on_for_rotations(0, -30, 0.35)
+    m.on(100, -40)
     while not is_right_white():
         pass
     while right_color_sensor_rli() > 50:
@@ -50,8 +50,8 @@ def base2line():
 
 def go_2_end_of_line():
     #follow the line to the intersection
-    Line_Flowering(right_color_sensor_rli, is_left_white, 2, min_speed=-20)
-    Line_Flowering(right_color_sensor_rli, is_left_black, 2)
+    Line_Flowering(right_color_sensor_rli, is_left_white, 1.5, min_speed=-20)
+    Line_Flowering(right_color_sensor_rli, is_left_black, 1.5, min_speed=-20)
     #Line_Flowering(right_color_sensor_rli, is_left_white, 2)
     #Line_Flowering(right_color_sensor_rli, is_left_other_shade, 2, stop_at_end=True)
     m.on(0, -20)
@@ -64,7 +64,7 @@ def go_2_end_of_line():
         pass
     m.off()
     #follow the line to the end by counting motor
-    end_position = ml.position - (360 * 1.6)
+    end_position = ml.position - (360 * 2)
     def on_for_rotations():
         return ml.position < end_position 
     
@@ -72,9 +72,9 @@ def go_2_end_of_line():
 
 def endofline2stability():
     #turn to stability testing mission
-    m.on_for_degrees(100, 20, (360 * 1.5))
+    m.on_for_degrees(100, 20, (360 * 1.6))
     m.on_for_rotations(0, -30, 1.5)
-    m.on_for_degrees(100, -20, (360 * 1.5))
+    m.on_for_degrees(100, -20, (360 * 1.6))
     m.on_for_seconds(0, -50, 2)
   
 def stability2elevator():
@@ -87,9 +87,9 @@ def stability2elevator():
     while not is_left_white():
         pass
     m.off()
-    Line_Flowering(rlidiff, other_stoping_point, 2, stop_at_end=True)
+    Line_Flowering(rlidiff, other_stoping_point, 1.5, min_speed=-20, stop_at_end=True)
 #Turing around
-    m.on_for_rotations(0, -10, 0.2)
+    m.on_for_rotations(0, -10, 0.3)
     m.on(100, -30)
     while not is_right_white():
         pass
@@ -98,7 +98,7 @@ def stability2elevator():
     while not is_right_white():
         pass
     m.off()
-    Line_Flowering(rlidiff, stoping_point, 2, -50, stop_at_end=True)
+    Line_Flowering(rlidiff, stoping_point, 1.5, -50, min_speed=-20, stop_at_end=True)
     m.on_for_rotations(0, -20, 0.5)
     m.on(100, -30)
     while not is_right_white():
@@ -110,7 +110,7 @@ def stability2elevator():
     m.off()
 
 def ramp_mission():
-    Line_Flowering(rlidiff, stoping_point, 2, -50, stop_at_end=True)
+    Line_Flowering(rlidiff, stoping_point, 1.5, -50, min_speed=-20, stop_at_end=True)
     st = gyro.angle
     m.on(0, -30)
     while st - 10 < gyro.angle:
