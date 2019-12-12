@@ -28,8 +28,8 @@ def is_left_black():
     else:
         return False
 
-def is_left_not_white():
-    if left_color_sensor_rli() < 90:
+def is_left_other_shade():
+    if left_color_sensor_rli() < 50:
         return True
     else:
         return False
@@ -46,8 +46,8 @@ def is_right_black():
     else:
         return False
 
-def is_right_not_white():
-    if right_color_sensor_rli() < 90:
+def is_right_other_shade():
+    if right_color_sensor_rli() < 50:
         return True
     else:
         return False
