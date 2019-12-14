@@ -72,9 +72,11 @@ def go_2_end_of_line():
 
 def endofline2stability():
     #turn to stability testing mission
-    m.on_for_degrees(100, 20, (360 * 1.6))
-    m.on_for_rotations(0, -30, 1.5)
-    m.on_for_degrees(100, -20, (360 * 1.6))
+    m.on_for_degrees(100, 20, (360 * 0.9))
+    m.on_for_rotations(0, -25, 0.1)
+    m.on_for_degrees(100, 20, (360 * 0.9))
+    m.on_for_rotations(0, -30, 1.3)
+    m.on_for_degrees(100, -20, (360 * 1.8))
     m.on_for_seconds(0, -50, 2)
   
 def stability2elevator():

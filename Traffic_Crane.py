@@ -24,7 +24,7 @@ def traffic2circle_ish_line():
         pass
     m.off()
     #Turning towards crane mission
-    m.on(30, -40)
+    m.on(32, -40)
     #Stoping at line connected to base
     while is_right_black() != True:
         pass
@@ -64,35 +64,21 @@ def line2tree():
     time.sleep(1)
 
 def tree2crane():
-    #m.on_for_rotations(0, 25, 0.1)
-    m.on_for_rotations(-100, -30, 1.3)
-
-    ml.on(20)
+    m.on(-100, -40)
     while not is_left_white():
         pass
-    ml.off()
-    mr.on(20)
-    while not is_right_white():
+    while not is_left_other_shade():
         pass
-    mr.off()
-    ml.on(20)
-    while not is_left_black():
-        pass
-    ml.off()
-    mr.on(20)
-    while not is_right_black():
-        pass
-    mr.off()
-
-    m.on_for_rotations(0, -40, 2.5)
-    m.on(0, -30)
     while not is_left_white():
         pass
     while not is_left_black():
         pass
-    m.off()
-
-    m.on_for_rotations(100, -30, 1.3)
+    Line_Flowering(right_color_sensor_rli, is_left_white, 1.5, min_speed=-15)
+    Line_Flowering(right_color_sensor_rli, is_left_black, 1.5, min_speed=-15)
+    m.on(100, -20)
+    while not is_right_other_shade():
+        pass
+    Line_Flowering(left_color_sensor_rli, is_right_white, -1.5, min_speed=-20)
     m.on(0, -30)
     while not is_right_black():
         pass
