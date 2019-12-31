@@ -6,6 +6,7 @@ import time
 from ev3dev2.motor import OUTPUT_A, OUTPUT_B, OUTPUT_C, OUTPUT_D
 from ev3dev2.motor import LargeMotor, MoveTank, MoveSteering, MediumMotor
 from ev3dev2.sensor.lego import UltrasonicSensor
+from ev3dev2.sensor.lego import GyroSensor
 from ev3dev2.sensor import INPUT_2
 from color import *
 m=MoveSteering(OUTPUT_B, OUTPUT_C)
@@ -13,6 +14,8 @@ ml=LargeMotor(OUTPUT_B)
 mr=LargeMotor(OUTPUT_C)
 mmL=MediumMotor(OUTPUT_A)
 mmR=MediumMotor(OUTPUT_D)
+
+gyro = GyroSensor(INPUT_2)
 
 def get_left_action_motor():
     return mmL
@@ -39,4 +42,19 @@ def drive_until(when2stop, steering=999, power=0, stop_at_end=False):
     while when2stop() != True:
         pass
     if stop_at_end:
+        m.off()
+
+def drive_staight(when2stop, power, gain, stop_at_end=True):
+    gyro._ensure_mode(GyroSensor.MODE_GYRO_ANG)
+    angle2keep = gyro.angle 
+    while not when2stop():
+        diff = (gyro.angle - angle2keep) * gain  #calculating difference
+
+        #limiting difference
+        if diff > 100:
+            diff = 100
+        if diff < -100:
+            diff = -100
+        m.on(diff, power) #running
+    if stop_at_end == True:
         m.off()
