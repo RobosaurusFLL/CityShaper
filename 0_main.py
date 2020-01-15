@@ -3,25 +3,18 @@
 import sys
 import time
 
-from ev3dev2.motor import OUTPUT_A, OUTPUT_B, OUTPUT_C, OUTPUT_D
-from ev3dev2.motor import LargeMotor, MoveTank, MoveSteering
-from ev3dev2.sensor.lego import UltrasonicSensor
-from ev3dev2.sensor import INPUT_2
-from line import Line_Flowering, square2line, square2Otherline
-from color import *
-
 from ev3dev2.button import Button
 from time import sleep
-from push_blocks import push2redcircle, push2blackcircle
+from push_blocks import blocks_and_crane
 from swing2ramp import swing2ramp
-from Traffic_Crane import Traffic_Crane
+from Traffic_Tree import Traffic_Tree
 
 import os
 os.system('setfont Lat15-TerminusBold32x16')
 
 btn = Button()
 
-function_list = [push2blackcircle, push2redcircle, Traffic_Crane, swing2ramp]
+function_list = [blocks_and_crane, Traffic_Tree, swing2ramp]
 func_index = -1
 
 prev_butt = []

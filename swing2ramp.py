@@ -26,33 +26,23 @@ def stoping_point():
 def base2line():
     #driving out of base and turning to the line
     drive_staight(is_right_other_shade, -60, -10)
-    drive_until(is_left_white, -100, -20)
-    drive_until(is_right_white, 0, -40)
-    drive_until(is_right_black, 0, -40)
-    drive_until(is_right_white, stop_at_end=True)
-    #at the line, driving further and then turning to be parallel to the line
-    drive_for_rotations(0, -30, 0.35)
-    drive_until(is_right_white, 100, -40)
-    drive_until(is_right_black)    
-    drive_until(is_right_white, stop_at_end=True)    
-
+    drive_until(is_right_white, -35, -40)
+ 
 def line2red_circle():
-    end_position = mr.position - (360 * 1.5)
+    end_position = mr.position - (360 * 1)
     def on_for_rotations():
         return mr.position < end_position
     #following line to the slightly turning point
     Line_Flowering(rlidiff, on_for_rotations, 1.5, min_speed=-20)
-    Line_Flowering(rlidiff, is_right_black, 1.5, stop_at_end=True)
+    Line_Flowering(rlidiff, is_right_black, 1, max_speed=-60, stop_at_end=True)
 
 def release_cake_truck():
     #lifting box and driving forwards to recapture tan blocks
-    mmL.on_for_seconds(-75, 1)
-    drive_for_rotations(0, -20, 0.4)
     mmL.on_for_seconds(75, 1)
+    drive_for_rotations(0, -20, 0.8)
+    mmL.on_for_seconds(-75, 1)
 
 def red_circle2end_of_line():
-    #driving forwards to go past turning area
-    drive_for_rotations(0, -20, 0.5)
     #following line until reaching the branching out line
     Line_Flowering(right_color_sensor_rli, is_left_white, 1.5, min_speed=-20)
     Line_Flowering(right_color_sensor_rli, is_left_black, 1.5, min_speed=-20)
@@ -65,7 +55,7 @@ def red_circle2end_of_line():
     #driving slightly left to avoid catching on the pole of the swing
     drive_for_rotations(-5, -50, 1)
     #turning against the pole of the swing and pushing attachment into safety factor
-    drive_for_seconds(50, -100, 1)
+    drive_for_seconds(50, -100, 1.5)
     #"wiggling" to make sure the attachment is pushed into the safety factor
     drive_for_seconds(0, -100, 0.5)
 
@@ -92,10 +82,11 @@ def line2elevator():
         return time.time() > end_time
     #following line into elevator & pushing into it
     Line_Flowering(right_color_sensor_rli, on_for_seconds, -2, stop_at_end=True)
+    drive_for_rotations(0, 20, 0.5)
 
 def release_tan_blocks():
     # lifting box again to release tan blocks into tan circle
-    mmL.on_for_seconds(-75, 1)
+    mmL.on_for_seconds(75, 1)
     #backing out
     drive_for_rotations(50, 40, 1)
     drive_until(is_left_white, -100, -40)
@@ -124,9 +115,10 @@ def ramp_mission():
     #rotating a little to raise flags
     drive_for_rotations(0, -20, 0.5)
     drive_for_rotations(100, -10, 0.6)
+    mmL.on_for_seconds(-75, 1.5)
 
 def swing2ramp():
-    #combining all the sections' functions
+    #combining all the sections' function
     base2line()
     line2red_circle()
     release_cake_truck()
@@ -138,4 +130,3 @@ def swing2ramp():
 
 if __name__ == "__main__":
     swing2ramp()
-

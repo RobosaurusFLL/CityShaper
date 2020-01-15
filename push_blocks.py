@@ -7,36 +7,45 @@ from ev3dev2.sensor.lego import UltrasonicSensor
 from ev3dev2.sensor import INPUT_2
 from color import *
 from move import *
+from line import *
 
-ml = get_left_drive_motor()
+ml = get_left_action_motor()
+mr = get_right_action_motor()
 
-def push2redcircle():
-    def on_for_rotations():
-        return ml.position < end_position 
-    end_position = ml.position - (360 * 6)
+def push2blackcircle_and_crane():
+    #turnning onto the beginning of the circle-ish line
+    drive_until(is_left_black, -30, -40)
+    #crossing over to other end of circle-ish line
+    drive_until(is_right_black, -25, -50)
+    drive_until(is_right_white)
+    drive_until(is_right_other_shade, stop_at_end=True)
+    #utilizing the edge of the shaded part between two ends of circle-ish line
 
-    #push blocks :'D
-    drive_until(on_for_rotations, 0, -40, True)
+    Line_Flowering(right_color_sensor_rli, is_left_other_shade, 2, max_speed = -30,min_speed=-15)
+    #drive_until(is_left_black, 70, -20)
+    #following circle-ish line to push attachment into crane
+    Line_Flowering(left_color_sensor_rli, is_right_black, 1.5, max_speed = -30, min_speed=-20)
+    drive_until(is_right_black, 0, -10)
+    drive_until(is_right_white, -15, -10)
+    drive_for_seconds(-40, -20, 1)
 
-    drive_for_rotations(0, 20, 0.5)
-    drive_for_rotations(0, 100, 2)
-    drive_for_rotations(100, -50, 0.5)
-    drive_for_seconds(0, 100, 3)
-    drive_for_rotations(100, 50, 2.5)
+def release_crane():
+    mr.on_for_seconds(75, 1)
+    time.sleep(1)
+    mr.on_for_seconds(-75, 1)
 
-def push2blackcircle():
-    def on_for_rotations():
-        return ml.position < end_position 
+def crane2home():
+    m.on_for_rotations(0, 20, 1)
+    m.on_for_rotations(0, 40, 1.5)
+    ml.on_for_seconds(75, 1)
+    m.on_for_rotations(100, -40, 1.5)
+    m.on_for_seconds(0, 100, 2)
+    m.on_for_seconds(-100, -100, 1)
 
-    end_position = ml.position - (360 * 3.5)
-
-    #push blocks :'D
-    drive_until(on_for_rotations, 0, -40, True)
-    drive_for_rotations(0, 100, 1.5)
-
-    drive_for_rotations( 100, -50, 2)
-    drive_for_seconds(0, 100, 1.5)
-    drive_for_rotations(100, 50, 3)
+def blocks_and_crane():
+    push2blackcircle_and_crane()
+    release_crane()
+    crane2home()
 
 if __name__ == "__main__":
-    push2blackcircle()
+    blocks_and_crane()
