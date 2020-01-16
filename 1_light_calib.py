@@ -10,13 +10,14 @@ from ev3dev2.sensor.lego import ColorSensor
 m = MoveSteering(OUTPUT_B, OUTPUT_C)
 cl = ColorSensor(INPUT_1)
 cr = ColorSensor(INPUT_4)
+#setting reflective light intensities (rli) to unrealistic values to make sure they're replaced
 l_black = 100
 l_white = 0
 r_black = 100
 r_white = 0
 m.left_motor.position = 0
 m.on(0, 20)
-
+#driving (over a line) and collecting the brightest and darkest rlis
 while m.left_motor.position < 360:
     rli = cl.reflected_light_intensity
     if l_black > rli:

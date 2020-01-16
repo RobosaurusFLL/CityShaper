@@ -3,128 +3,129 @@
 import sys
 import time
 
-import time
-
-from ev3dev2.motor import OUTPUT_A, OUTPUT_B, OUTPUT_C, OUTPUT_D
-from ev3dev2.motor import LargeMotor, MoveTank, MoveSteering
 from ev3dev2.sensor.lego import GyroSensor
 from ev3dev2.sensor import INPUT_2
 from line import Line_Flowering, square2line
 from color import *
-m = MoveSteering(OUTPUT_B, OUTPUT_C)
-ml=LargeMotor(OUTPUT_B)
-mr=LargeMotor(OUTPUT_C)
+from move import *
+
+ml=get_left_drive_motor()
+mr=get_right_drive_motor()
+mmL=get_left_action_motor()
 
 gyro = GyroSensor(INPUT_2)
 
 def rlidiff():
+    #using difference of the 2 color sensors to follow the middle of the line
     return (left_color_sensor_rli() - right_color_sensor_rli()) + 50
 
-def other_stoping_point():
-    return(is_left_other_shade() and is_right_other_shade()) 
-
 def stoping_point():
+    #stopping when both color sensors sense black
     return is_left_black() and is_right_black()
 
 def base2line():
-    m.on(0, -60)
-    while right_color_sensor_rli() > 50:
-        pass
-    m.on(-35, -40)
-    while not is_right_white():
-        pass
-    m.on(0, -40)
-    while not is_right_black():
-        pass
-    while not is_right_white():
-        pass
-    m.off()
+    #driving out of base and turning to the line
+    drive_staight(is_right_other_shade, -60, -10)
+    drive_until(is_right_white, -35, -40)
+ 
+def line2red_circle():
+    end_position = mr.position - (360 * 1)
+    def on_for_rotations():
+        return mr.position < end_position
+    #following line to the slightly turning point
+    Line_Flowering(rlidiff, on_for_rotations, 1.5, min_speed=-20)
+    Line_Flowering(rlidiff, is_right_black, 1, max_speed=-60, stop_at_end=True)
 
-    m.on_for_rotations(0, -30, 0.35)
-    m.on(100, -40)
-    while not is_right_white():
-        pass
-    while right_color_sensor_rli() > 50:
-        pass
-    
+def release_cake_truck():
+    #lifting box and driving forwards to recapture tan blocks
+    mmL.on_for_seconds(75, 1)
+    drive_for_rotations(0, -20, 0.8)
+    mmL.on_for_seconds(-75, 1)
 
-def go_2_end_of_line():
-    #follow the line to the intersection
+def red_circle2end_of_line():
+    #following line until reaching the branching out line
     Line_Flowering(right_color_sensor_rli, is_left_white, 1.5, min_speed=-20)
     Line_Flowering(right_color_sensor_rli, is_left_black, 1.5, min_speed=-20)
-    #Line_Flowering(right_color_sensor_rli, is_left_white, 2)
-    #Line_Flowering(right_color_sensor_rli, is_left_other_shade, 2, stop_at_end=True)
-    m.on(0, -20)
-    while not is_left_white():
-        pass
-    while not is_left_other_shade():
-        pass
-    m.on(50, -20)
-    while right_color_sensor_rli() > 90:
-        pass
-    m.off()
-    #follow the line to the end by counting motor
-    end_position = ml.position - (360 * 2)
+    Line_Flowering(right_color_sensor_rli, is_left_white, 1.5, min_speed=-20)
     def on_for_rotations():
-        return ml.position < end_position 
-    
-    Line_Flowering(right_color_sensor_rli, on_for_rotations, -2, -30)
+        return mr.position < end_position 
 
-def endofline2stability():
-    #turn to stability testing mission
-    m.on_for_degrees(100, 20, (360 * 1.6))
-    m.on_for_rotations(0, -30, 1.5)
-    m.on_for_degrees(100, -20, (360 * 1.6))
-    m.on_for_seconds(0, -50, 2)
-  
-def stability2elevator():
-    m.on_for_rotations(0, 5, 0.3)
-    m.on(0, 30)
-    while not is_left_white():
-        pass
-    while not is_left_black():
-        pass
-    while not is_left_white():
-        pass
-    m.off()
-    Line_Flowering(rlidiff, other_stoping_point, 1.5, min_speed=-20, stop_at_end=True)
-#Turing around
-    m.on_for_rotations(0, -10, 0.3)
-    m.on(100, -30)
-    while not is_right_white():
-        pass
-    while not is_right_black():
-        pass
-    while not is_right_white():
-        pass
-    m.off()
-    Line_Flowering(rlidiff, stoping_point, 1.5, -50, min_speed=-20, stop_at_end=True)
-    m.on_for_rotations(0, -20, 0.5)
-    m.on(100, -30)
-    while not is_right_white():
-        pass
-    while not is_right_black():
-        pass
-    while not is_right_white():
-        pass
-    m.off()
+    end_position = mr.position - (360 * 1)
+    Line_Flowering(right_color_sensor_rli, on_for_rotations, 1.5, min_speed=-20)
+    #driving slightly left to avoid catching on the pole of the swing
+    drive_for_rotations(-5, -50, 1)
+    #turning against the pole of the swing and pushing attachment into safety factor
+    drive_for_seconds(50, -100, 1.5)
+    #"wiggling" to make sure the attachment is pushed into the safety factor
+    drive_for_seconds(0, -100, 0.5)
+
+def line2elevator():
+    #backing past branching out line
+    drive_for_rotations(0, 50, 3.5)
+    #finding way to line next to the elevator by wiggling a lot
+    drive_until(is_left_white, -40, -40)
+    drive_until(is_left_black)
+    drive_until(is_left_white)
+    drive_until(is_left_other_shade)
+    drive_until(is_right_other_shade)
+    drive_until(is_left_white, 50, 40)
+    drive_until(is_left_black, stop_at_end=True)
+    Line_Flowering(left_color_sensor_rli, is_right_other_shade, -2, max_speed=-30)
+    Line_Flowering(left_color_sensor_rli, is_right_white, -2, max_speed=-30)
+    Line_Flowering(left_color_sensor_rli, is_right_black, -2)
+    Line_Flowering(left_color_sensor_rli, is_right_white, -2)
+    Line_Flowering(left_color_sensor_rli, is_right_other_shade, -2)
+    drive_until(is_right_white, 100, -40)
+    #when2stop = current time + goal
+    end_time = time.time() + 7
+    def on_for_seconds():
+        return time.time() > end_time
+    #following line into elevator & pushing into it
+    Line_Flowering(right_color_sensor_rli, on_for_seconds, -2, stop_at_end=True)
+    drive_for_rotations(0, 20, 0.5)
+
+def release_tan_blocks():
+    # lifting box again to release tan blocks into tan circle
+    mmL.on_for_seconds(75, 1)
+    #backing out
+    drive_for_rotations(50, 40, 1)
+    drive_until(is_left_white, -100, -40)
+    drive_until(is_left_black)
+    drive_until(is_left_white, stop_at_end=True)
 
 def ramp_mission():
+    #following line to bottom of the ramp
     Line_Flowering(rlidiff, stoping_point, 1.5, -50, min_speed=-20, stop_at_end=True)
-    st = gyro.angle
-    m.on(0, -30)
-    while st - 10 < gyro.angle:
-        pass
-    while st - 5 > gyro.angle:
-        pass
-    m.on_for_rotations(0, -20, 0.5)
-    m.on_for_rotations(100, -10, 0.6)
+    drive_for_rotations(0, -40, 0.5)
+    drive_until(is_right_white, 100, -40)
+    drive_until(is_right_black)
+    drive_until(is_right_white, stop_at_end=True)
+
+    Line_Flowering(rlidiff, stoping_point, 1.5, -50, min_speed=-20, stop_at_end=True)
+    gyro._ensure_mode(GyroSensor.MODE_TILT_ANG)
+    def gyro_on_ramp():
+        return st - 10 > gyro.tilt_angle
+    def gyro_on_flat():
+        return st - 5 < gyro.tilt_angle
+
+    st = gyro.tilt_angle
+    #driving up ramp, using tilt of the gyro sensor to sense when we reach the top
+    drive_until(gyro_on_ramp, 0, -30)
+    drive_until(gyro_on_flat)
+    #rotating a little to raise flags
+    drive_for_rotations(0, -20, 0.5)
+    drive_for_rotations(100, -10, 0.6)
+    mmL.on_for_seconds(-75, 1.5)
 
 def swing2ramp():
+    #combining all the sections' function
     base2line()
-    go_2_end_of_line()
-    endofline2stability()
-    stability2elevator()
+    line2red_circle()
+    release_cake_truck()
+
+    red_circle2end_of_line()
+    line2elevator()
+    release_tan_blocks()
     ramp_mission()
 
 if __name__ == "__main__":
