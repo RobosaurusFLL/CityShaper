@@ -16,7 +16,7 @@ def push2blackcircle_and_crane():
     #turnning onto the beginning of the circle-ish line
     drive_until(is_left_black, -30, -40)
     #crossing over to other end of circle-ish line
-    drive_until(is_right_black, -25, -50)
+    drive_until(is_right_black, -30, -50)
     drive_until(is_right_white)
     drive_until(is_right_other_shade, stop_at_end=True)
     #utilizing the edge of the shaded part between two ends of circle-ish line
@@ -30,17 +30,17 @@ def push2blackcircle_and_crane():
     drive_for_seconds(-40, -20, 1)
 
 def release_crane():
-    mr.on_for_seconds(75, 1)
+    mr.on_for_seconds(75, 0.5)
     time.sleep(1)
-    mr.on_for_seconds(-75, 1)
+    mr.on_for_seconds(-75, 0.5)
 
 def crane2home():
-    m.on_for_rotations(0, 20, 1)
-    m.on_for_rotations(0, 40, 1.5)
-    ml.on_for_seconds(75, 1)
-    m.on_for_rotations(100, -40, 1.5)
-    m.on_for_seconds(0, 100, 2)
-    m.on_for_seconds(-100, -100, 1)
+    drive_for_rotations(0, 20, 0.5)
+    drive_for_rotations(0, 60, 2)
+    ml.on_for_seconds(75, 0.5)
+    drive_for_rotations(100, -100, 1.5)
+    drive_for_seconds(0, 100, 2.5)
+    drive_for_seconds(-100, -100, 1.5)
 
 def blocks_and_crane():
     push2blackcircle_and_crane()

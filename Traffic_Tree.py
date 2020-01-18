@@ -45,16 +45,18 @@ def line2tree():
     #end_position = mr.position - (360 * 1.1)
     #Line_Flowering(rlidiff, on_for_rotations, 1, max_speed=-30, stop_at_end=True)
     #activating attachment to push blocks onto tree
-    mmL.on_for_seconds(-75, 2)
+    mmL.on_for_seconds(-75, 0.5)
     time.sleep(1)
 
 def tree2home():
-    drive_for_rotations(0, 60, 2.5)
-    mmL.on(75)
-    drive_for_rotations(100, -40, 1.5)
+    def close2wall():
+        return us.distance_centimeters < 20
+    drive_for_rotations(0, 100, 2.5)
+    mmL.on(50)
+    drive_for_rotations(100, 60, 1.4)
     mmL.off()
-    drive_for_seconds(0, 100, 4)
-    drive_for_rotations(-100, -40, 1.5)
+    drive_until(close2wall, 0, -100)
+    drive_for_seconds(100, 75, 1)
 
 def Traffic_Tree():
     traffic2circle_ish_line()

@@ -12,6 +12,10 @@ from Traffic_Tree import Traffic_Tree
 import os
 os.system('setfont Lat15-TerminusBold32x16')
 
+from move import *
+ml = get_left_action_motor()
+mr = get_right_action_motor()
+
 btn = Button()
 
 function_list = [blocks_and_crane, Traffic_Tree, swing2ramp]
@@ -37,6 +41,8 @@ while True:
                 func_index = 3
             if func_index >= 0 and func_index < len(function_list):
                 function_list[func_index]()
+                ml.off(brake=False)
+                mr.off(brake=False)
         prev_butt = butt
     sleep(0.01)
 

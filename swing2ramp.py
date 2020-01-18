@@ -38,9 +38,9 @@ def line2red_circle():
 
 def release_cake_truck():
     #lifting box and driving forwards to recapture tan blocks
-    mmL.on_for_seconds(75, 1)
+    mmL.on_for_seconds(75, 0.5)
     drive_for_rotations(0, -20, 0.8)
-    mmL.on_for_seconds(-75, 1)
+    mmL.on_for_seconds(-75, 0.5)
 
 def red_circle2end_of_line():
     #following line until reaching the branching out line
@@ -50,7 +50,7 @@ def red_circle2end_of_line():
     def on_for_rotations():
         return mr.position < end_position 
 
-    end_position = mr.position - (360 * 1)
+    end_position = mr.position - (360 * 0.5)
     Line_Flowering(right_color_sensor_rli, on_for_rotations, 1.5, min_speed=-20)
     #driving slightly left to avoid catching on the pole of the swing
     drive_for_rotations(-5, -50, 1)
@@ -82,11 +82,10 @@ def line2elevator():
         return time.time() > end_time
     #following line into elevator & pushing into it
     Line_Flowering(right_color_sensor_rli, on_for_seconds, -2, stop_at_end=True)
-    drive_for_rotations(0, 20, 0.5)
 
 def release_tan_blocks():
     # lifting box again to release tan blocks into tan circle
-    mmL.on_for_seconds(75, 1)
+    mmL.on_for_seconds(75, 0.5)
     #backing out
     drive_for_rotations(50, 40, 1)
     drive_until(is_left_white, -100, -40)
@@ -96,7 +95,7 @@ def release_tan_blocks():
 def ramp_mission():
     #following line to bottom of the ramp
     Line_Flowering(rlidiff, stoping_point, 1.5, -50, min_speed=-20, stop_at_end=True)
-    drive_for_rotations(0, -40, 0.5)
+    drive_for_rotations(0, -40, 0.2)
     drive_until(is_right_white, 100, -40)
     drive_until(is_right_black)
     drive_until(is_right_white, stop_at_end=True)
@@ -122,7 +121,6 @@ def swing2ramp():
     base2line()
     line2red_circle()
     release_cake_truck()
-
     red_circle2end_of_line()
     line2elevator()
     release_tan_blocks()
