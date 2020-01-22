@@ -12,6 +12,7 @@ from move import *
 ml=get_left_drive_motor()
 mr=get_right_drive_motor()
 mmL=get_left_action_motor()
+mmR=get_right_action_motor()
 
 gyro = GyroSensor(INPUT_2)
 
@@ -115,6 +116,7 @@ def ramp_mission():
     drive_for_rotations(0, -20, 0.5)
     drive_for_rotations(100, -10, 0.6)
     mmL.on_for_seconds(-75, 1.5)
+    mmR.on_for_seconds(-50, 2)
 
 def swing2ramp():
     #combining all the sections' function

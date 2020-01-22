@@ -33,7 +33,7 @@ def line2tree():
         return (left_color_sensor_rli() - right_color_sensor_rli()) + 50
 
     def aimattree():
-        return us.distance_centimeters < 14
+        return us.distance_centimeters < 17
     #following line until ultrasonic sensor reading decreases so that we know we're close to the tree
     Line_Flowering(rlidiff, aimattree, 1.5, min_speed=-30)
     def stoping_point():
@@ -56,6 +56,7 @@ def tree2home():
     drive_for_rotations(100, 60, 1.4)
     mmL.off()
     drive_until(close2wall, 0, -100)
+    drive_for_rotations(0, -100, 1)
     drive_for_seconds(100, 75, 1)
 
 def Traffic_Tree():
