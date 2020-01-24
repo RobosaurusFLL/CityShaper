@@ -1,5 +1,8 @@
 #!/usr/bin/env micropython
 
+#This program follows lines and the edge of the white part of launch area to get to
+#  the crane, where it activates the attchments and releases blocks into the black circle
+
 import sys
 import time
 

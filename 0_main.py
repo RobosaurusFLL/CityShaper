@@ -1,5 +1,8 @@
 #!/usr/bin/env micropython
 
+#This program is run durring the robotic competition, and reacts whenever a 
+# certain button is pressed by running the mission corrosponding to that button. 
+#If only the middle button is pressed, it will run the missions in a pre definned order
 import sys
 import time
 

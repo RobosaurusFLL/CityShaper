@@ -1,5 +1,8 @@
 #!/usr/bin/env micropython
 
+#This program makes the robot run forwards over a line, and use the lowest 
+# value of the reflective light intensity as the value of black and the highest
+#  value as the value of white, to calibrate the values in a different lighting
 import sys
 
 from ev3dev2.motor import OUTPUT_A, OUTPUT_B, OUTPUT_C, OUTPUT_D

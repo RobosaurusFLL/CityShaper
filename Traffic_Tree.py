@@ -1,5 +1,9 @@
 #!/usr/bin/env micropython
 
+#This program completes the traffic jam and treehouse missions by 
+# backing into the traffic jam and following lines to the tree, where 
+# it drops building units in using Lego pnuematics
+
 import sys
 import time
 

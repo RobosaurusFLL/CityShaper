@@ -1,5 +1,9 @@
 #!/usr/bin/env micropython
 
+#This program is the program that does the Design and build mission in the
+# red and tan circles, as well as the swing, elevator, ramp, and safety factor 
+# by following lines to get around. The swing, elevator, 
+# and safety factor are completed just by running into the mission model with an attachment
 import sys
 import time
 

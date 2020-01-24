@@ -1,5 +1,7 @@
 #!/usr/bin/env micropython
 
+#This program has functions that allow the robot to follow and align / square to lines
+
 import sys
 import time
 

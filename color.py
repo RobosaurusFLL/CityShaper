@@ -1,5 +1,8 @@
 #!/usr/bin/env micropython
 
+#This program provides unified functions for telling the robot
+# if the color sensor is reading something certain
+
 import sys
 
 from ev3dev2.sensor import INPUT_1, INPUT_2, INPUT_3, INPUT_4
